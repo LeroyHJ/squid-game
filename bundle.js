@@ -281,7 +281,7 @@ var require_spaceShooterGame = __commonJS({
       }
       run = (callback) => {
         this.callback = callback;
-        document.getElementById("space-shooters-container").style.display = "inline";
+        document.getElementById("space-shooter-game").style.display = "inline";
         this.createPlayer(this.$container);
         this.createEnemies(this.$container);
         window.addEventListener("keydown", this.KeyPress);
@@ -289,12 +289,11 @@ var require_spaceShooterGame = __commonJS({
         this.update();
       };
       end = () => {
-        document.getElementById("space-shooters-container").style.display = "none";
+        document.getElementById("space-shooter-game").style.display = "none";
         window.removeEventListener("keydown", this.KeyPress);
         window.removeEventListener("keyup", this.KeyRelease);
       };
       update = () => {
-        console.log(this);
         this.updatePlayer();
         this.updateEnemies(this.$container);
         this.updateLaser(this.$container);
@@ -302,9 +301,11 @@ var require_spaceShooterGame = __commonJS({
         if (this.STATE.gameOver) {
           console.log("You lost!");
           this.end();
+          this.callback("Lost");
         } else if (this.STATE.enemies.length == 0) {
           console.log("You won!");
           this.end();
+          this.callback("Won!");
         } else {
           window.requestAnimationFrame(this.update);
         }
@@ -417,11 +418,11 @@ var require_spaceShooterGame = __commonJS({
             this.deleteLaser(lasers, laser, laser.$laser);
           }
           this.setPosition(laser.$laser, laser.x, laser.y);
-          const laser_rectangle = laser.$laser.getthis.BoundingClientRect();
+          const laser_rectangle = laser.$laser.getBoundingClientRect();
           const enemies = this.STATE.enemies;
           for (let j = 0; j < enemies.length; j++) {
             const enemy = enemies[j];
-            const enemy_rectangle = enemy.$enemy.getthis.BoundingClientRect();
+            const enemy_rectangle = enemy.$enemy.getBoundingClientRect();
             if (this.collideRect(enemy_rectangle, laser_rectangle)) {
               this.deleteLaser(lasers, laser, laser.$laser);
               const index = enemies.indexOf(enemy);
@@ -448,8 +449,8 @@ var require_spaceShooterGame = __commonJS({
           if (enemyLaser.y > this.GAME_HEIGHT - 30) {
             this.deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
           }
-          const enemyLaser_rectangle = enemyLaser.$enemyLaser.getthis.BoundingClientRect();
-          const spaceship_rectangle = document.querySelector(".player").getthis.BoundingClientRect();
+          const enemyLaser_rectangle = enemyLaser.$enemyLaser.getBoundingClientRect();
+          const spaceship_rectangle = document.querySelector(".player").getBoundingClientRect();
           if (this.collideRect(spaceship_rectangle, enemyLaser_rectangle)) {
             this.STATE.gameOver = true;
           }
