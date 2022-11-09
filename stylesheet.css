@@ -113,6 +113,15 @@
 
 /* space invaders */
 
+#space-shooters-container {
+  position: fixed;
+  top: 200px;
+  left: 200px;
+  width: 720px;
+  height: 360px;
+  display: none;
+}
+
 body {
   height: 100%;
   overflow: hidden;

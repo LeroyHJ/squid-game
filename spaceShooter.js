@@ -1,17 +1,14 @@
 class SpaceShooter {
   constructor() {
-    // keys
     this.KEY_UP = 87;
     this.KEY_DOWN = 83;
     this.KEY_RIGHT = 68;
     this.KEY_LEFT = 65;
     this.KEY_SPACE = 32;
 
-    // size
     this.GAME_WIDTH = 720;
     this.GAME_HEIGHT = 360;
 
-    // state
     this.STATE = {
       x_pos: 0,
       y_pos: 0,
@@ -29,13 +26,13 @@ class SpaceShooter {
       gameOver: false,
     };
 
-    // container
-    this.$container = document.querySelector(".space-shoote-game");
+    this.$container = document.querySelector(".space-shooter-game");
   }
 
   run(callback) {
-    // display container
     this.callback = callback;
+    document.getElementById("space-shooters-container").style.display =
+      "inline";
     this.createPlayer(this.$container);
     this.createEnemies(this.$container);
     window.addEventListener("keydown", this.KeyPress);
@@ -44,7 +41,7 @@ class SpaceShooter {
   }
 
   end() {
-    // hide container
+    document.getElementById("space-shooters-container").style.display = "none";
     window.removeEventListener("keydown", this.KeyPress);
     window.removeEventListener("keyup", this.KeyRelease);
   }
@@ -57,8 +54,10 @@ class SpaceShooter {
 
     if (this.STATE.gameOver) {
       console.log("You lost!");
+      this.end();
     } else if (this.STATE.enemies.length == 0) {
       console.log("You won!");
+      this.end();
     } else {
       window.requestAnimationFrame(update);
     }
