@@ -294,6 +294,7 @@ var require_spaceShooterGame = __commonJS({
         window.removeEventListener("keyup", this.KeyRelease);
       }
       update() {
+        console.log(this);
         this.updatePlayer();
         this.updateEnemies(this.$container);
         this.updateLaser(this.$container);
