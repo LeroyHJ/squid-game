@@ -33,8 +33,9 @@ class SpaceShooter {
     this.$container = document.querySelector(".main");
   }
 
-  run() {
+  run(callback) {
     // display container
+    this.callback = callback;
     this.createPlayer(this.$container);
     this.createEnemies(this.$container);
     window.addEventListener("keydown", this.KeyPress);
