@@ -49,10 +49,10 @@ class SpaceShooter {
   }
 
   update() {
-    updatePlayer();
-    updateEnemies(this.$container);
-    updateLaser(this.$container);
-    updateEnemyLaser(this.$container);
+    this.updatePlayer();
+    this.updateEnemies(this.$container);
+    this.updateLaser(this.$container);
+    this.updateEnemyLaser(this.$container);
 
     window.requestAnimationFrame(update);
 
@@ -66,10 +66,10 @@ class SpaceShooter {
 
   createEnemies($container) {
     for (var i = 0; i <= this.STATE.number_of_enemies / 2; i++) {
-      createEnemy(this.$container, i * 80, 60);
+      this.createEnemy(this.$container, i * 80, 60);
     }
     // } for(var i = 0; i <= this.STATE.number_of_enemies/2; i++){
-    //   createEnemy(this.$container, i*80, 180);
+    //   this.createEnemy(this.$container, i*80, 180);
     // }
   }
 
@@ -112,8 +112,8 @@ class SpaceShooter {
     const enemy_cooldown = Math.floor(Math.random() * 100);
     const enemy = { x, y, $enemy, enemy_cooldown };
     this.STATE.enemies.push(enemy);
-    setSize($enemy, this.STATE.enemy_width);
-    setPosition($enemy, x, y);
+    this.setSize($enemy, this.STATE.enemy_width);
+    this.setPosition($enemy, x, y);
   }
 
   updateEnemies($container) {
@@ -124,10 +124,10 @@ class SpaceShooter {
       const enemy = enemies[i];
       var a = enemy.x + dx;
       var b = enemy.y + dy;
-      setPosition(enemy.$enemy, a, b);
+      this.setPosition(enemy.$enemy, a, b);
       enemy.cooldown = Math.random(0, 100);
       if (enemy.enemy_cooldown == 0) {
-        createEnemyLaser(this.$container, a, b);
+        this.createEnemyLaser(this.$container, a, b);
         enemy.enemy_cooldown = Math.floor(Math.random() * 50) + 100;
       }
       enemy.enemy_cooldown -= 0.5;
@@ -141,8 +141,8 @@ class SpaceShooter {
     $player.src = "img/spaceship.png";
     $player.className = "player";
     this.$container.appendChild($player);
-    setPosition($player, this.STATE.x_pos, this.STATE.y_pos);
-    setSize($player, this.STATE.spaceship_width);
+    this.setPosition($player, this.STATE.x_pos, this.STATE.y_pos);
+    this.setSize($player, this.STATE.spaceship_width);
   }
 
   updatePlayer() {
@@ -153,7 +153,7 @@ class SpaceShooter {
       this.STATE.x_pos += 3;
     }
     if (this.STATE.shoot && this.STATE.cooldown == 0) {
-      createLaser(
+      this.createLaser(
         this.$container,
         this.STATE.x_pos - this.STATE.spaceship_width / 2,
         this.STATE.y_pos
@@ -161,7 +161,11 @@ class SpaceShooter {
       this.STATE.cooldown = 30;
     }
     const $player = document.querySelector(".player");
-    setPosition($player, bound(this.STATE.x_pos), this.STATE.y_pos - 10);
+    this.setPosition(
+      $player,
+      this.bound(this.STATE.x_pos),
+      this.STATE.y_pos - 10
+    );
     if (this.STATE.cooldown > 0) {
       this.STATE.cooldown -= 0.5;
     }
@@ -174,7 +178,7 @@ class SpaceShooter {
     this.$container.appendChild($laser);
     const laser = { x, y, $laser };
     this.STATE.lasers.push(laser);
-    setPosition($laser, x, y);
+    this.setPosition($laser, x, y);
   }
 
   updateLaser($container) {
@@ -183,16 +187,16 @@ class SpaceShooter {
       const laser = lasers[i];
       laser.y -= 2;
       if (laser.y < 0) {
-        deleteLaser(lasers, laser, laser.$laser);
+        this.deleteLaser(lasers, laser, laser.$laser);
       }
-      setPosition(laser.$laser, laser.x, laser.y);
-      const laser_rectangle = laser.$laser.getBoundingClientRect();
+      this.setPosition(laser.$laser, laser.x, laser.y);
+      const laser_rectangle = laser.$laser.getthis.BoundingClientRect();
       const enemies = this.STATE.enemies;
       for (let j = 0; j < enemies.length; j++) {
         const enemy = enemies[j];
-        const enemy_rectangle = enemy.$enemy.getBoundingClientRect();
-        if (collideRect(enemy_rectangle, laser_rectangle)) {
-          deleteLaser(lasers, laser, laser.$laser);
+        const enemy_rectangle = enemy.$enemy.getthis.BoundingClientRect();
+        if (this.collideRect(enemy_rectangle, laser_rectangle)) {
+          this.deleteLaser(lasers, laser, laser.$laser);
           const index = enemies.indexOf(enemy);
           enemies.splice(index, 1);
           this.$container.removeChild(enemy.$enemy);
@@ -208,7 +212,7 @@ class SpaceShooter {
     this.$container.appendChild($enemyLaser);
     const enemyLaser = { x, y, $enemyLaser };
     this.STATE.enemyLasers.push(enemyLaser);
-    setPosition($enemyLaser, x, y);
+    this.setPosition($enemyLaser, x, y);
   }
 
   updateEnemyLaser($container) {
@@ -217,17 +221,17 @@ class SpaceShooter {
       const enemyLaser = enemyLasers[i];
       enemyLaser.y += 2;
       if (enemyLaser.y > this.GAME_HEIGHT - 30) {
-        deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
+        this.deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
       }
       const enemyLaser_rectangle =
-        enemyLaser.$enemyLaser.getBoundingClientRect();
+        enemyLaser.$enemyLaser.getthis.BoundingClientRect();
       const spaceship_rectangle = document
         .querySelector(".player")
-        .getBoundingClientRect();
-      if (collideRect(spaceship_rectangle, enemyLaser_rectangle)) {
+        .getthis.BoundingClientRect();
+      if (this.collideRect(spaceship_rectangle, enemyLaser_rectangle)) {
         this.STATE.gameOver = true;
       }
-      setPosition(
+      this.setPosition(
         enemyLaser.$enemyLaser,
         enemyLaser.x + this.STATE.enemy_width / 2,
         enemyLaser.y + 15
