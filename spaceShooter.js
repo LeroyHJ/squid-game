@@ -28,6 +28,49 @@ class SpaceShooter {
       enemy_cooldown: 0,
       gameOver: false,
     };
+
+    // container
+    this.$container = document.querySelector(".main");
+  }
+
+  run() {
+    // display container
+    this.createPlayer(this.$container);
+    this.createEnemies(this.$container);
+    window.addEventListener("keydown", this.KeyPress);
+    window.addEventListener("keyup", this.KeyRelease);
+    this.update();
+  }
+
+  end() {
+    // hide container
+    window.removeEventListener("keydown", this.KeyPress);
+    window.removeEventListener("keyup", this.KeyRelease);
+  }
+
+  update() {
+    updatePlayer();
+    updateEnemies(this.$container);
+    updateLaser(this.$container);
+    updateEnemyLaser(this.$container);
+
+    window.requestAnimationFrame(update);
+
+    if (this.STATE.gameOver) {
+      document.querySelector(".lose").style.display = "block";
+    }
+    if (this.STATE.enemies.length == 0) {
+      document.querySelector(".win").style.display = "block";
+    }
+  }
+
+  createEnemies($container) {
+    for (var i = 0; i <= this.STATE.number_of_enemies / 2; i++) {
+      createEnemy(this.$container, i * 80, 60);
+    }
+    // } for(var i = 0; i <= this.STATE.number_of_enemies/2; i++){
+    //   createEnemy(this.$container, i*80, 180);
+    // }
   }
 
   setPosition($element, x, y) {
@@ -40,12 +83,12 @@ class SpaceShooter {
   }
 
   bound(x) {
-    if (x >= GAME_WIDTH - STATE.spaceship_width) {
-      STATE.x_pos = GAME_WIDTH - STATE.spaceship_width;
-      return GAME_WIDTH - STATE.spaceship_width;
+    if (x >= this.GAME_WIDTH - this.STATE.spaceship_width) {
+      this.STATE.x_pos = this.GAME_WIDTH - this.STATE.spaceship_width;
+      return this.GAME_WIDTH - this.STATE.spaceship_width;
     }
     if (x <= 0) {
-      STATE.x_pos = 0;
+      this.STATE.x_pos = 0;
       return 0;
     } else {
       return x;
@@ -65,18 +108,18 @@ class SpaceShooter {
     const $enemy = document.createElement("img");
     $enemy.src = "img/ufo.png";
     $enemy.className = "enemy";
-    $container.appendChild($enemy);
+    this.$container.appendChild($enemy);
     const enemy_cooldown = Math.floor(Math.random() * 100);
     const enemy = { x, y, $enemy, enemy_cooldown };
-    STATE.enemies.push(enemy);
-    setSize($enemy, STATE.enemy_width);
+    this.STATE.enemies.push(enemy);
+    setSize($enemy, this.STATE.enemy_width);
     setPosition($enemy, x, y);
   }
 
   updateEnemies($container) {
     const dx = Math.sin(Date.now() / 1000) * 40;
     const dy = Math.cos(Date.now() / 1000) * 30;
-    const enemies = STATE.enemies;
+    const enemies = this.STATE.enemies;
     for (let i = 0; i < enemies.length; i++) {
       const enemy = enemies[i];
       var a = enemy.x + dx;
@@ -84,7 +127,7 @@ class SpaceShooter {
       setPosition(enemy.$enemy, a, b);
       enemy.cooldown = Math.random(0, 100);
       if (enemy.enemy_cooldown == 0) {
-        createEnemyLaser($container, a, b);
+        createEnemyLaser(this.$container, a, b);
         enemy.enemy_cooldown = Math.floor(Math.random() * 50) + 100;
       }
       enemy.enemy_cooldown -= 0.5;
@@ -92,35 +135,35 @@ class SpaceShooter {
   }
 
   createPlayer($container) {
-    STATE.x_pos = GAME_WIDTH / 2;
-    STATE.y_pos = GAME_HEIGHT - 50;
+    this.STATE.x_pos = this.GAME_WIDTH / 2;
+    this.STATE.y_pos = this.GAME_HEIGHT - 50;
     const $player = document.createElement("img");
     $player.src = "img/spaceship.png";
     $player.className = "player";
-    $container.appendChild($player);
-    setPosition($player, STATE.x_pos, STATE.y_pos);
-    setSize($player, STATE.spaceship_width);
+    this.$container.appendChild($player);
+    setPosition($player, this.STATE.x_pos, this.STATE.y_pos);
+    setSize($player, this.STATE.spaceship_width);
   }
 
   updatePlayer() {
-    if (STATE.move_left) {
-      STATE.x_pos -= 3;
+    if (this.STATE.move_left) {
+      this.STATE.x_pos -= 3;
     }
-    if (STATE.move_right) {
-      STATE.x_pos += 3;
+    if (this.STATE.move_right) {
+      this.STATE.x_pos += 3;
     }
-    if (STATE.shoot && STATE.cooldown == 0) {
+    if (this.STATE.shoot && this.STATE.cooldown == 0) {
       createLaser(
-        $container,
-        STATE.x_pos - STATE.spaceship_width / 2,
-        STATE.y_pos
+        this.$container,
+        this.STATE.x_pos - this.STATE.spaceship_width / 2,
+        this.STATE.y_pos
       );
-      STATE.cooldown = 30;
+      this.STATE.cooldown = 30;
     }
     const $player = document.querySelector(".player");
-    setPosition($player, bound(STATE.x_pos), STATE.y_pos - 10);
-    if (STATE.cooldown > 0) {
-      STATE.cooldown -= 0.5;
+    setPosition($player, bound(this.STATE.x_pos), this.STATE.y_pos - 10);
+    if (this.STATE.cooldown > 0) {
+      this.STATE.cooldown -= 0.5;
     }
   }
 
@@ -128,14 +171,14 @@ class SpaceShooter {
     const $laser = document.createElement("img");
     $laser.src = "img/laser.png";
     $laser.className = "laser";
-    $container.appendChild($laser);
+    this.$container.appendChild($laser);
     const laser = { x, y, $laser };
-    STATE.lasers.push(laser);
+    this.STATE.lasers.push(laser);
     setPosition($laser, x, y);
   }
 
   updateLaser($container) {
-    const lasers = STATE.lasers;
+    const lasers = this.STATE.lasers;
     for (let i = 0; i < lasers.length; i++) {
       const laser = lasers[i];
       laser.y -= 2;
@@ -144,7 +187,7 @@ class SpaceShooter {
       }
       setPosition(laser.$laser, laser.x, laser.y);
       const laser_rectangle = laser.$laser.getBoundingClientRect();
-      const enemies = STATE.enemies;
+      const enemies = this.STATE.enemies;
       for (let j = 0; j < enemies.length; j++) {
         const enemy = enemies[j];
         const enemy_rectangle = enemy.$enemy.getBoundingClientRect();
@@ -152,7 +195,7 @@ class SpaceShooter {
           deleteLaser(lasers, laser, laser.$laser);
           const index = enemies.indexOf(enemy);
           enemies.splice(index, 1);
-          $container.removeChild(enemy.$enemy);
+          this.$container.removeChild(enemy.$enemy);
         }
       }
     }
@@ -162,18 +205,18 @@ class SpaceShooter {
     const $enemyLaser = document.createElement("img");
     $enemyLaser.src = "img/enemyLaser.png";
     $enemyLaser.className = "enemyLaser";
-    $container.appendChild($enemyLaser);
+    this.$container.appendChild($enemyLaser);
     const enemyLaser = { x, y, $enemyLaser };
-    STATE.enemyLasers.push(enemyLaser);
+    this.STATE.enemyLasers.push(enemyLaser);
     setPosition($enemyLaser, x, y);
   }
 
   updateEnemyLaser($container) {
-    const enemyLasers = STATE.enemyLasers;
+    const enemyLasers = this.STATE.enemyLasers;
     for (let i = 0; i < enemyLasers.length; i++) {
       const enemyLaser = enemyLasers[i];
       enemyLaser.y += 2;
-      if (enemyLaser.y > GAME_HEIGHT - 30) {
+      if (enemyLaser.y > this.GAME_HEIGHT - 30) {
         deleteLaser(enemyLasers, enemyLaser, enemyLaser.$enemyLaser);
       }
       const enemyLaser_rectangle =
@@ -182,13 +225,39 @@ class SpaceShooter {
         .querySelector(".player")
         .getBoundingClientRect();
       if (collideRect(spaceship_rectangle, enemyLaser_rectangle)) {
-        STATE.gameOver = true;
+        this.STATE.gameOver = true;
       }
       setPosition(
         enemyLaser.$enemyLaser,
-        enemyLaser.x + STATE.enemy_width / 2,
+        enemyLaser.x + this.STATE.enemy_width / 2,
         enemyLaser.y + 15
       );
+    }
+  }
+
+  deleteLaser(lasers, laser, $laser) {
+    const index = lasers.indexOf(laser);
+    lasers.splice(index, 1);
+    this.$container.removeChild($laser);
+  }
+
+  KeyPress(event) {
+    if (event.keyCode === this.KEY_RIGHT) {
+      this.STATE.move_right = true;
+    } else if (event.keyCode === this.KEY_LEFT) {
+      this.STATE.move_left = true;
+    } else if (event.keyCode === this.KEY_SPACE) {
+      this.STATE.shoot = true;
+    }
+  }
+
+  KeyRelease(event) {
+    if (event.keyCode === this.KEY_RIGHT) {
+      this.STATE.move_right = false;
+    } else if (event.keyCode === this.KEY_LEFT) {
+      this.STATE.move_left = false;
+    } else if (event.keyCode === this.KEY_SPACE) {
+      this.STATE.shoot = false;
     }
   }
 }
