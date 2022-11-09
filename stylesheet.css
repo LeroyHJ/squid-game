@@ -137,7 +137,7 @@ body {
   align-items: center;
 }
 
-.main {
+.space-shooter-game {
   width: 720px;
   height: 360px;
   background: url(img/background-blue.png);
@@ -201,7 +201,7 @@ footer {
   z-index: -1;
 }
 
-.lose {
+/* .lose {
   display: none;
   position: absolute;
   background: #6b1818;
@@ -225,4 +225,4 @@ footer {
   text-align: center;
   animation: pop-in 1s;
   top: 100px;
-}
+} */
