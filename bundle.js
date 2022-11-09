@@ -279,7 +279,7 @@ var require_spaceShooterGame = __commonJS({
         };
         this.$container = document.querySelector(".space-shooter-game");
       }
-      run(callback) {
+      run = (callback) => {
         this.callback = callback;
         document.getElementById("space-shooters-container").style.display = "inline";
         this.createPlayer(this.$container);
@@ -287,13 +287,13 @@ var require_spaceShooterGame = __commonJS({
         window.addEventListener("keydown", this.KeyPress);
         window.addEventListener("keyup", this.KeyRelease);
         this.update();
-      }
-      end() {
+      };
+      end = () => {
         document.getElementById("space-shooters-container").style.display = "none";
         window.removeEventListener("keydown", this.KeyPress);
         window.removeEventListener("keyup", this.KeyRelease);
-      }
-      update() {
+      };
+      update = () => {
         console.log(this);
         this.updatePlayer();
         this.updateEnemies(this.$container);
@@ -308,20 +308,20 @@ var require_spaceShooterGame = __commonJS({
         } else {
           window.requestAnimationFrame(this.update);
         }
-      }
-      createEnemies($container) {
+      };
+      createEnemies = ($container) => {
         for (var i = 0; i <= this.STATE.number_of_enemies / 2; i++) {
           this.createEnemy(this.$container, i * 80, 60);
         }
-      }
-      setPosition($element, x, y) {
+      };
+      setPosition = ($element, x, y) => {
         $element.style.transform = `translate(${x}px, ${y}px)`;
-      }
-      setSize($element, width) {
+      };
+      setSize = ($element, width) => {
         $element.style.width = `${width}px`;
         $element.style.height = "auto";
-      }
-      bound(x) {
+      };
+      bound = (x) => {
         if (x >= this.GAME_WIDTH - this.STATE.spaceship_width) {
           this.STATE.x_pos = this.GAME_WIDTH - this.STATE.spaceship_width;
           return this.GAME_WIDTH - this.STATE.spaceship_width;
@@ -332,11 +332,11 @@ var require_spaceShooterGame = __commonJS({
         } else {
           return x;
         }
-      }
-      collideRect(rect1, rect2) {
+      };
+      collideRect = (rect1, rect2) => {
         return !(rect2.left > rect1.right || rect2.right < rect1.left || rect2.top > rect1.bottom || rect2.bottom < rect1.top);
-      }
-      createEnemy($container, x, y) {
+      };
+      createEnemy = ($container, x, y) => {
         const $enemy = document.createElement("img");
         $enemy.src = "img/ufo.png";
         $enemy.className = "enemy";
@@ -346,8 +346,8 @@ var require_spaceShooterGame = __commonJS({
         this.STATE.enemies.push(enemy);
         this.setSize($enemy, this.STATE.enemy_width);
         this.setPosition($enemy, x, y);
-      }
-      updateEnemies($container) {
+      };
+      updateEnemies = ($container) => {
         const dx = Math.sin(Date.now() / 1e3) * 40;
         const dy = Math.cos(Date.now() / 1e3) * 30;
         const enemies = this.STATE.enemies;
@@ -363,8 +363,8 @@ var require_spaceShooterGame = __commonJS({
           }
           enemy.enemy_cooldown -= 0.5;
         }
-      }
-      createPlayer($container) {
+      };
+      createPlayer = ($container) => {
         this.STATE.x_pos = this.GAME_WIDTH / 2;
         this.STATE.y_pos = this.GAME_HEIGHT - 50;
         const $player = document.createElement("img");
@@ -373,8 +373,8 @@ var require_spaceShooterGame = __commonJS({
         this.$container.appendChild($player);
         this.setPosition($player, this.STATE.x_pos, this.STATE.y_pos);
         this.setSize($player, this.STATE.spaceship_width);
-      }
-      updatePlayer() {
+      };
+      updatePlayer = () => {
         if (this.STATE.move_left) {
           this.STATE.x_pos -= 3;
         }
@@ -398,8 +398,8 @@ var require_spaceShooterGame = __commonJS({
         if (this.STATE.cooldown > 0) {
           this.STATE.cooldown -= 0.5;
         }
-      }
-      createLaser($container, x, y) {
+      };
+      createLaser = ($container, x, y) => {
         const $laser = document.createElement("img");
         $laser.src = "img/laser.png";
         $laser.className = "laser";
@@ -407,8 +407,8 @@ var require_spaceShooterGame = __commonJS({
         const laser = { x, y, $laser };
         this.STATE.lasers.push(laser);
         this.setPosition($laser, x, y);
-      }
-      updateLaser($container) {
+      };
+      updateLaser = ($container) => {
         const lasers = this.STATE.lasers;
         for (let i = 0; i < lasers.length; i++) {
           const laser = lasers[i];
@@ -430,8 +430,8 @@ var require_spaceShooterGame = __commonJS({
             }
           }
         }
-      }
-      createEnemyLaser($container, x, y) {
+      };
+      createEnemyLaser = ($container, x, y) => {
         const $enemyLaser = document.createElement("img");
         $enemyLaser.src = "img/enemyLaser.png";
         $enemyLaser.className = "enemyLaser";
@@ -439,8 +439,8 @@ var require_spaceShooterGame = __commonJS({
         const enemyLaser = { x, y, $enemyLaser };
         this.STATE.enemyLasers.push(enemyLaser);
         this.setPosition($enemyLaser, x, y);
-      }
-      updateEnemyLaser($container) {
+      };
+      updateEnemyLaser = ($container) => {
         const enemyLasers = this.STATE.enemyLasers;
         for (let i = 0; i < enemyLasers.length; i++) {
           const enemyLaser = enemyLasers[i];
@@ -459,13 +459,13 @@ var require_spaceShooterGame = __commonJS({
             enemyLaser.y + 15
           );
         }
-      }
-      deleteLaser(lasers, laser, $laser) {
+      };
+      deleteLaser = (lasers, laser, $laser) => {
         const index = lasers.indexOf(laser);
         lasers.splice(index, 1);
         this.$container.removeChild($laser);
-      }
-      KeyPress(event) {
+      };
+      KeyPress = (event) => {
         if (event.keyCode === this.KEY_RIGHT) {
           this.STATE.move_right = true;
         } else if (event.keyCode === this.KEY_LEFT) {
@@ -473,8 +473,8 @@ var require_spaceShooterGame = __commonJS({
         } else if (event.keyCode === this.KEY_SPACE) {
           this.STATE.shoot = true;
         }
-      }
-      KeyRelease(event) {
+      };
+      KeyRelease = (event) => {
         if (event.keyCode === this.KEY_RIGHT) {
           this.STATE.move_right = false;
         } else if (event.keyCode === this.KEY_LEFT) {
@@ -482,7 +482,7 @@ var require_spaceShooterGame = __commonJS({
         } else if (event.keyCode === this.KEY_SPACE) {
           this.STATE.shoot = false;
         }
-      }
+      };
     };
     module2.exports = SpaceShooterGame;
   }
