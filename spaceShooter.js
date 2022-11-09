@@ -30,7 +30,7 @@ class SpaceShooter {
     };
 
     // container
-    this.$container = document.querySelector(".main");
+    this.$container = document.querySelector(".space-shoote-game");
   }
 
   run(callback) {
@@ -55,13 +55,12 @@ class SpaceShooter {
     this.updateLaser(this.$container);
     this.updateEnemyLaser(this.$container);
 
-    window.requestAnimationFrame(update);
-
     if (this.STATE.gameOver) {
-      document.querySelector(".lose").style.display = "block";
-    }
-    if (this.STATE.enemies.length == 0) {
-      document.querySelector(".win").style.display = "block";
+      console.log("You lost!");
+    } else if (this.STATE.enemies.length == 0) {
+      console.log("You won!");
+    } else {
+      window.requestAnimationFrame(update);
     }
   }
 

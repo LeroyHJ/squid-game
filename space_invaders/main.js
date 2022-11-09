@@ -149,6 +149,7 @@ function updateLaser($container) {
       if (collideRect(enemy_rectangle, laser_rectangle)) {
         deleteLaser(lasers, laser, laser.$laser);
         const index = enemies.indexOf(enemy);
+        // win condition remove enemies from array
         enemies.splice(index, 1);
         $container.removeChild(enemy.$enemy);
       }
@@ -179,6 +180,7 @@ function updateEnemyLaser($container) {
     const spaceship_rectangle = document
       .querySelector(".player")
       .getBoundingClientRect();
+    // lose condition
     if (collideRect(spaceship_rectangle, enemyLaser_rectangle)) {
       STATE.gameOver = true;
     }
@@ -227,9 +229,11 @@ function update() {
 
   window.requestAnimationFrame(update);
 
+  // adjust lose display
   if (STATE.gameOver) {
     document.querySelector(".lose").style.display = "block";
   }
+  // adjust win display
   if (STATE.enemies.length == 0) {
     document.querySelector(".win").style.display = "block";
   }
