@@ -156,7 +156,7 @@ body {
   position: relative;
   z-index: -2;
   display: none;
-  top: -300px;
+  top: -200px;
 }
 
 header {
@@ -192,19 +192,19 @@ footer {
   height: 100%;
 }
 
-.main .laser {
-  position: absolute;
+.space-shooter-game .laser {
+  position: relative;
   margin-left: -2.5px;
   height: 25px;
   /* default z-index is 0*/
   z-index: -1;
 }
 
-.main .enemy {
+.space-shooter-game .enemy {
   position: absolute;
 }
 
-.main .enemyLaser {
+.space-shooter-game .enemyLaser {
   position: absolute;
   margin-left: -2.5px;
   height: 20px;

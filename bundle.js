@@ -273,7 +273,7 @@ var require_spaceShooterGame = __commonJS({
           spaceship_width: 50,
           enemy_width: 50,
           cooldown: 0,
-          number_of_enemies: 14,
+          number_of_enemies: 12,
           enemy_cooldown: 0,
           gameOver: false
         };
@@ -312,7 +312,7 @@ var require_spaceShooterGame = __commonJS({
       };
       createEnemies = ($container) => {
         for (var i = 0; i <= this.STATE.number_of_enemies / 2; i++) {
-          this.createEnemy(this.$container, i * 80, 60);
+          this.createEnemy(this.$container, i * 95, 23);
         }
       };
       setPosition = ($element, x, y) => {
@@ -394,7 +394,7 @@ var require_spaceShooterGame = __commonJS({
         this.setPosition(
           $player,
           this.bound(this.STATE.x_pos),
-          this.STATE.y_pos - 10
+          this.STATE.y_pos
         );
         if (this.STATE.cooldown > 0) {
           this.STATE.cooldown -= 0.5;

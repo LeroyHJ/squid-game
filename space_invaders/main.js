@@ -59,7 +59,7 @@ function collideRect(rect1, rect2) {
 // Enemy
 function createEnemy($container, x, y) {
   const $enemy = document.createElement("img");
-  $enemy.src = "img/ufo.png";
+  // $enemy.src = "img/ufo.png";
   $enemy.className = "enemy";
   $container.appendChild($enemy);
   const enemy_cooldown = Math.floor(Math.random() * 100);
